@@ -14,9 +14,9 @@ export class PortPrinter implements Printer {
   print(port: PortSnapshot): void {
     const storageArea = port.storageArea;
     const trainStorage = port.trainStorage;
-    let shipStorage = port.shipStorage;
+    const shipStorage = port.shipStorage;
 
-    const train = () => {
+    const trainText = () => {
       const xs = new Array(3).fill('-');
 
       for (let i = 0; i < trainStorage; i++) {
@@ -32,7 +32,7 @@ export class PortPrinter implements Printer {
     let three = [ shipStorage > 3 ? 'X|' : ' |', storageArea > 3 ? 'X' : ' ', '|' ].join('')
     let four = [ shipStorage > 2 ? 'X|' : ' |', storageArea > 2 ? 'X' : ' ', '|' ].join('');
     const five = [ shipStorage > 1 ? 'X|' : ' |', storageArea > 1 ? 'X' : ' ', '|' ].join('');
-    const six = [ shipStorage > 0 ? 'X|' : ' |', storageArea > 0 ? 'X' : ' ', '|', port.trainStorage > 0 ? train() : '   ', '  D i' ].join('');
+    const six = [ shipStorage > 0 ? 'X|' : ' |', storageArea > 0 ? 'X' : ' ', '|', port.trainStorage > 0 ? trainText() : '   ', '  D i' ].join('');
     const seven = [ shipStorage !== -1 ? 'V' : ' ', `A_A---::%%%` ].join('');
 
     this.c.printLine(one)
@@ -42,27 +42,5 @@ export class PortPrinter implements Printer {
     this.c.printLine(five)
     this.c.printLine(six)
     this.c.printLine(seven)
-
-    // console.log(one)
-    // console.log(two)
-    // console.log(three)
-    // console.log(four)
-    // console.log(five)
-    // console.log(six)
-    // console.log(seven)
   }
-
-  private storageAreaFor(storage: number, n: number) {
-    if (storage === n) {
-      return storage - 1;
-    }
-    ;
-
-    return storage
-  }
-
-  private isEqualTo(n1: number, n2: number) {
-    return n1 === n2
-  }
-
 }
