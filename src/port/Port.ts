@@ -1,3 +1,8 @@
+import { Crane } from "../crane/Crane";
+import { Train } from "../train/Train";
+import { Ship } from "../ship/Ship";
+import { Printer } from "../console/Printer";
+
 export interface Port {
   show(): void
   receiveShip(): void
@@ -6,7 +11,13 @@ export interface Port {
 }
 
 export class SeaPort implements Port {
-  constructor() {
+  constructor(
+    private readonly leftCrane: Crane,
+    private readonly rightCrane: Crane,
+    private readonly train: Train,
+    private readonly ship: Ship,
+    private readonly printer?: Printer
+  ) {
   }
 
   receiveShip(): void {
@@ -16,8 +27,18 @@ export class SeaPort implements Port {
   }
 
   show(): void {
+    this.printer!.print(this)
   }
 
   unload(): void {
   }
+
+  // private clone(): Port {
+  //   return new SeaPort(
+  //     null,
+  //     null,
+  //     null,
+  //     null
+  //   );
+  // }
 }
