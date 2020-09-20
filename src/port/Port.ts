@@ -30,6 +30,7 @@ export class SeaPort implements Port {
   }
 
   sendTrain(): void {
+    this.train = 0
   }
 
   show(): void {
