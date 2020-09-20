@@ -16,11 +16,11 @@ export class PortPrinter implements Printer {
     let shipStorage = port.shipStorage;
 
     let one = '-^-^';
-    let two = [' |', storageArea-- == 5 ? 'x' : ' ', '|'].join('');
-    let three = [shipStorage-- === 4 ? 'x' : ' |', storageArea-- == 4 ? 'x' : ' ', '|'].join('')
-    let four = [shipStorage-- === 3 ? 'x' : ' |', storageArea-- == 3 ? 'x' : ' ', '|'].join('');
-    const five = [shipStorage-- === 2 ? 'x' : ' |', storageArea-- == 2 ? 'x' : ' ', '|'].join('');
-    const six = [shipStorage-- === 1 ? 'x' : ' |', storageArea == 1 ? 'x' : ' ', '|     D i'].join('');
+    let two = [' |', storageArea-- == 5 ? 'X' : ' ', '|'].join('');
+    let three = [shipStorage-- === 4 ? 'X|' : ' |', storageArea-- == 4 ? 'x' : ' ', '|'].join('')
+    let four = [shipStorage-- === 3 ? 'X|' : ' |', storageArea-- == 3 ? 'x' : ' ', '|'].join('');
+    const five = [shipStorage-- === 2 ? 'X|' : ' |', storageArea-- == 2 ? 'x' : ' ', '|'].join('');
+    const six = [shipStorage-- === 1 ? 'X|' : ' |', storageArea == 1 ? 'x' : ' ', '|     D i'].join('');
     const seven = [port.shipStorage !== -1 ? 'V' : ' ', 'A_A---::%%%'].join('');
 
     this.c.printLine(one)
