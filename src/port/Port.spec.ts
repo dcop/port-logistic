@@ -1,23 +1,18 @@
-import { Times, Mock } from 'typemoq'
-import { PortPrinter, Printer } from "../console/Printer";
+import { Mock, Times } from 'typemoq'
+import { PortPrinter } from "../console/Printer";
 import { Console } from "../console/Console";
 import { Port, SeaPort } from "./Port";
-import { Crane } from "../crane/Crane";
-import { Train } from "../train/Train";
-import { Ship } from "../ship/Ship";
 
 describe('Port', () => {
   it('should show default when empty', () => {
     const cons = Mock.ofType<Console>()
     const printer = new PortPrinter(cons.object);
-    const leftCrane = Mock.ofType<Crane>()
-    const rightCrane = Mock.ofType<Crane>()
-    const train = Mock.ofType<Train>()
+    const storage = 0
+    const train = 0
     const ship = -1;
     const seaPort = new SeaPort(
-      leftCrane.object,
-      rightCrane.object,
-      train.object,
+      storage,
+      train,
       ship,
       printer
     );
@@ -36,14 +31,12 @@ describe('Port', () => {
   it('should receive ship', () => {
     const cons = Mock.ofType<Console>()
     const printer = new PortPrinter(cons.object);
-    const leftCrane = Mock.ofType<Crane>()
-    const rightCrane = Mock.ofType<Crane>()
-    const train = Mock.ofType<Train>()
+    const storage = 0
+    const train = 0
     const ship = 4;
     const seaPort = new SeaPort(
-      leftCrane.object,
-      rightCrane.object,
-      train.object,
+      storage,
+      train,
       ship,
       printer
     );
@@ -57,6 +50,32 @@ describe('Port', () => {
     cons.verify(s => s.printLine('X| |'), Times.atLeastOnce())
     cons.verify(s => s.printLine('X| |'), Times.atLeastOnce())
     cons.verify(s => s.printLine('X| |     D i'), Times.once())
+    cons.verify(s => s.printLine('VA_A---::%%%'), Times.once())
+  });
+
+  it('should unload', () => {
+    const cons = Mock.ofType<Console>()
+    const printer = new PortPrinter(cons.object);
+    const train = 0
+    const ship = 0;
+    const storage = 0;
+    const seaPort = new SeaPort(
+      storage,
+      train,
+      ship,
+      printer
+    );
+
+    seaPort.receiveShip()
+    seaPort.unload();
+    seaPort.show();
+
+    cons.verify(s => s.printLine('-^-^'), Times.once())
+    cons.verify(s => s.printLine(' | |'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' | |'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' | |'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' | |'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' |X|XXX  D i'), Times.once())
     cons.verify(s => s.printLine('VA_A---::%%%'), Times.once())
   });
 })

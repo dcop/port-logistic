@@ -1,5 +1,3 @@
-import { Crane } from "../crane/Crane";
-import { Train } from "../train/Train";
 import { Printer } from "../console/Printer";
 
 export interface Port {
@@ -15,11 +13,13 @@ export type PortSnapshot = {
   storageArea: number
 }
 
+const STORAGE_MAX_CAPACITY = 5;
+const TRAIN_MAX_CAPACITY = 3;
+
 export class SeaPort implements Port {
   constructor(
-    private readonly leftCrane: Crane,
-    private readonly rightCrane: Crane,
-    private readonly train: Train,
+    private storageArea: number = 0,
+    private train: number = 0,
     private ship: number = -1,
     private readonly printer: Printer
   ) {
@@ -35,11 +35,20 @@ export class SeaPort implements Port {
   show(): void {
     this.printer.print({
       shipStorage: this.ship,
-      storageArea: 0,
-      trainStorage: 0
+      storageArea: this.storageArea,
+      trainStorage: this.train
     })
   }
 
   unload(): void {
+    while(this.storageArea <= STORAGE_MAX_CAPACITY || this.ship === 0) {
+      this.ship--;
+      this.storageArea++;
+    }
+
+    while(this.train <= TRAIN_MAX_CAPACITY) {
+      this.storageArea--;
+      this.train++;
+    }
   }
 }
