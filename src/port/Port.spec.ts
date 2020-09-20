@@ -78,4 +78,32 @@ describe('Port', () => {
     cons.verify(s => s.printLine(' |X|XXX  D i'), Times.once())
     cons.verify(s => s.printLine('VA_A---::%%%'), Times.once())
   });
+
+  it('should receive ship and unload 2 times', () => {
+    const cons = Mock.ofType<Console>()
+    const printer = new PortPrinter(cons.object);
+    const train = 0
+    const ship = 0;
+    const storage = 0;
+    const seaPort = new SeaPort(
+      storage,
+      train,
+      ship,
+      printer
+    );
+
+    seaPort.receiveShip()
+    seaPort.unload();
+    seaPort.receiveShip()
+    seaPort.unload();
+    seaPort.show();
+
+    cons.verify(s => s.printLine('-^-^'), Times.once())
+    cons.verify(s => s.printLine(' |X|'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' |X|'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' |X|'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' |X|'), Times.atLeastOnce())
+    cons.verify(s => s.printLine(' |X|XXX  D i'), Times.once())
+    cons.verify(s => s.printLine('VA_A---::%%%'), Times.once())
+  });
 })

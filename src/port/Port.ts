@@ -41,12 +41,12 @@ export class SeaPort implements Port {
   }
 
   unload(): void {
-    while(this.storageArea <= STORAGE_MAX_CAPACITY || this.ship === 0) {
+    while(this.storageArea < STORAGE_MAX_CAPACITY && this.ship > 0) {
       this.ship--;
       this.storageArea++;
     }
 
-    while(this.train <= TRAIN_MAX_CAPACITY) {
+    while(this.train < TRAIN_MAX_CAPACITY && this.storageArea > 0) {
       this.storageArea--;
       this.train++;
     }

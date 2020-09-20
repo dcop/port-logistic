@@ -12,16 +12,36 @@ export class PortPrinter implements Printer {
   }
 
   print(port: PortSnapshot): void {
-    let storageArea = port.storageArea;
+    const storageArea = port.storageArea;
+    const trainStorage = port.trainStorage;
     let shipStorage = port.shipStorage;
 
+    console.log(storageArea)
+    console.log(shipStorage)
+    console.log(trainStorage)
+
+    const train = () => {
+
+      const xs = new Array(3).fill('-');
+
+      if (trainStorage > 0) {
+        for(let i = 0; i < trainStorage; i++) {
+          xs[i] = 'X'
+        }
+
+        return xs.join('').replace('-', ' ')
+      }
+
+      return '   '
+    }
+
     let one = '-^-^';
-    let two = [' |', storageArea-- == 5 ? 'X' : ' ', '|'].join('');
-    let three = [shipStorage-- === 4 ? 'X|' : ' |', storageArea-- == 4 ? 'x' : ' ', '|'].join('')
-    let four = [shipStorage-- === 3 ? 'X|' : ' |', storageArea-- == 3 ? 'x' : ' ', '|'].join('');
-    const five = [shipStorage-- === 2 ? 'X|' : ' |', storageArea-- == 2 ? 'x' : ' ', '|'].join('');
-    const six = [shipStorage-- === 1 ? 'X|' : ' |', storageArea == 1 ? 'x' : ' ', '|     D i'].join('');
-    const seven = [port.shipStorage !== -1 ? 'V' : ' ', 'A_A---::%%%'].join('');
+    let two = [' |', storageArea === 5 ? 'X' : ' ', '|'].join('');
+    let three = [shipStorage > 3 ? 'X|' : ' |', storageArea > 3 ? 'X' : ' ', '|'].join('')
+    let four = [shipStorage > 2 ? 'X|' : ' |', storageArea > 2 ? 'X' : ' ', '|'].join('');
+    const five = [shipStorage > 1 ? 'X|' : ' |', storageArea > 1 ? 'X' : ' ', '|'].join('');
+    const six = [shipStorage > 0 ? 'X|' : ' |', storageArea > 0 ? 'X' : ' ', '|', port.trainStorage > 0 ? train() : '   ', '  D i'].join('');
+    const seven = [shipStorage !== -1 ? 'V' : ' ', `A_A---::%%%`].join('');
 
     this.c.printLine(one)
     this.c.printLine(two)
@@ -31,13 +51,25 @@ export class PortPrinter implements Printer {
     this.c.printLine(six)
     this.c.printLine(seven)
 
-    console.log(one)
-    console.log(two)
-    console.log(three)
-    console.log(four)
-    console.log(five)
-    console.log(six)
-    console.log(seven)
+    // console.log(one)
+    // console.log(two)
+    // console.log(three)
+    // console.log(four)
+    // console.log(five)
+    // console.log(six)
+    // console.log(seven)
+  }
+
+  private storageAreaFor(storage: number, n: number) {
+    if (storage === n) {
+      return storage-1;
+    };
+
+    return storage
+  }
+
+  private isEqualTo(n1: number, n2: number) {
+    return n1 === n2
   }
 
 }
