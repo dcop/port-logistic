@@ -16,32 +16,24 @@ export class PortPrinter implements Printer {
     const trainStorage = port.trainStorage;
     let shipStorage = port.shipStorage;
 
-    console.log(storageArea)
-    console.log(shipStorage)
-    console.log(trainStorage)
-
     const train = () => {
-
       const xs = new Array(3).fill('-');
 
-      if (trainStorage > 0) {
-        for(let i = 0; i < trainStorage; i++) {
-          xs[i] = 'X'
-        }
-
-        return xs.join('').replace('-', ' ')
+      for (let i = 0; i < trainStorage; i++) {
+        xs[i] = 'X'
       }
 
-      return '   '
+      return xs.join('').replace('-', ' ')
+
     }
 
     let one = '-^-^';
-    let two = [' |', storageArea === 5 ? 'X' : ' ', '|'].join('');
-    let three = [shipStorage > 3 ? 'X|' : ' |', storageArea > 3 ? 'X' : ' ', '|'].join('')
-    let four = [shipStorage > 2 ? 'X|' : ' |', storageArea > 2 ? 'X' : ' ', '|'].join('');
-    const five = [shipStorage > 1 ? 'X|' : ' |', storageArea > 1 ? 'X' : ' ', '|'].join('');
-    const six = [shipStorage > 0 ? 'X|' : ' |', storageArea > 0 ? 'X' : ' ', '|', port.trainStorage > 0 ? train() : '   ', '  D i'].join('');
-    const seven = [shipStorage !== -1 ? 'V' : ' ', `A_A---::%%%`].join('');
+    let two = [ ' |', storageArea === 5 ? 'X' : ' ', '|' ].join('');
+    let three = [ shipStorage > 3 ? 'X|' : ' |', storageArea > 3 ? 'X' : ' ', '|' ].join('')
+    let four = [ shipStorage > 2 ? 'X|' : ' |', storageArea > 2 ? 'X' : ' ', '|' ].join('');
+    const five = [ shipStorage > 1 ? 'X|' : ' |', storageArea > 1 ? 'X' : ' ', '|' ].join('');
+    const six = [ shipStorage > 0 ? 'X|' : ' |', storageArea > 0 ? 'X' : ' ', '|', port.trainStorage > 0 ? train() : '   ', '  D i' ].join('');
+    const seven = [ shipStorage !== -1 ? 'V' : ' ', `A_A---::%%%` ].join('');
 
     this.c.printLine(one)
     this.c.printLine(two)
@@ -62,8 +54,9 @@ export class PortPrinter implements Printer {
 
   private storageAreaFor(storage: number, n: number) {
     if (storage === n) {
-      return storage-1;
-    };
+      return storage - 1;
+    }
+    ;
 
     return storage
   }

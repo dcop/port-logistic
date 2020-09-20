@@ -1,4 +1,6 @@
 import { Printer } from "../console/Printer";
+import { Ship } from "../ship/Ship";
+import { Train } from "../train_/Train";
 
 export interface Port {
   show(): void
@@ -14,42 +16,47 @@ export type PortSnapshot = {
 }
 
 const STORAGE_MAX_CAPACITY = 5;
-const TRAIN_MAX_CAPACITY = 3;
 
 export class SeaPort implements Port {
   constructor(
     private storageArea: number = 0,
-    private train: number = 0,
-    private ship: number = -1,
+    private train: Train,
+    private ship: Ship | null,
     private readonly printer: Printer
   ) {
   }
 
   receiveShip(): void {
-    this.ship = 4;
+    this.ship = new Ship(4);
   }
 
   sendTrain(): void {
-    this.train = 0
+    this.train = new Train()
   }
 
   show(): void {
     this.printer.print({
-      shipStorage: this.ship,
+      shipStorage: this.hasShip() ? this.ship!.currentStorage() : -1,
       storageArea: this.storageArea,
-      trainStorage: this.train
+      trainStorage: this.train.currentStorage()
     })
   }
 
   unload(): void {
-    while(this.storageArea < STORAGE_MAX_CAPACITY && this.ship > 0) {
-      this.ship--;
+    const ship = this.ship!;
+
+    while(this.storageArea < STORAGE_MAX_CAPACITY && !ship.isEmpty()) {
+      ship.unload();
       this.storageArea++;
     }
 
-    while(this.train < TRAIN_MAX_CAPACITY && this.storageArea > 0) {
+    while(!this.train.isFull() && this.storageArea > 0) {
       this.storageArea--;
-      this.train++;
+      this.train.load();
     }
+  }
+
+  private hasShip() {
+    return this.ship !== null;
   }
 }
