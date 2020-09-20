@@ -1,23 +1,43 @@
+import { PortSnapshot } from "../port/Port";
 import { Console } from "./Console";
-import { Port } from "../port/Port";
 
 export interface Printer {
-  print<T>(p: T): void
+  print(p: PortSnapshot): void
 }
 
 export class PortPrinter implements Printer {
   constructor(
-    private readonly console: Console) {
+    private readonly c: Console
+  ) {
   }
 
-  print<Port>(port: Port): void {
-    this.console.printLine('-^-^')
-    this.console.printLine(' | |')
-    this.console.printLine(' | |')
-    this.console.printLine(' | |')
-    this.console.printLine(' | |')
-    this.console.printLine(' | |     D i')
-    this.console.printLine(' A_A---::%%%')
+  print(port: PortSnapshot): void {
+    let storageArea = port.storageArea;
+    let shipStorage = port.shipStorage;
+
+    let one = '-^-^';
+    let two = [' |', storageArea-- == 5 ? 'x' : ' ', '|'].join('');
+    let three = [shipStorage-- === 4 ? 'x' : ' |', storageArea-- == 4 ? 'x' : ' ', '|'].join('')
+    let four = [shipStorage-- === 3 ? 'x' : ' |', storageArea-- == 3 ? 'x' : ' ', '|'].join('');
+    const five = [shipStorage-- === 2 ? 'x' : ' |', storageArea-- == 2 ? 'x' : ' ', '|'].join('');
+    const six = [shipStorage-- === 1 ? 'x' : ' |', storageArea == 1 ? 'x' : ' ', '|     D i'].join('');
+    const seven = [port.shipStorage !== -1 ? 'V' : ' ', 'A_A---::%%%'].join('');
+
+    this.c.printLine(one)
+    this.c.printLine(two)
+    this.c.printLine(three)
+    this.c.printLine(four)
+    this.c.printLine(five)
+    this.c.printLine(six)
+    this.c.printLine(seven)
+
+    console.log(one)
+    console.log(two)
+    console.log(three)
+    console.log(four)
+    console.log(five)
+    console.log(six)
+    console.log(seven)
   }
 
 }
