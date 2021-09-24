@@ -1,52 +1,46 @@
-import { portFactory } from "./port/portFactory";
-import { PortPrinter } from "./console/Printer";
-import { ShellConsole } from "./console/ShellConsole";
+import { OneSecretAtAtime } from "./OneSecretAtAtime";
 
-const seaPort = portFactory(new PortPrinter(new ShellConsole()))
+const people = new Map<string, Person>();
 
-const useCase0 = () => {
-  seaPort.show()
+export function ask(person: string) {
+  const aPerson = people.get(person);
+
+  return aPerson!.ask();
 }
 
+export function talksWith(a: string, b: string) {
+  let aPerson: Person;
+  let anotherPerson: Person
 
-const useCase1 = () => {
-  seaPort.receiveShip()
-  seaPort.show()
+  if (!people.has(a)) {
+    aPerson = new OneSecretAtAtime(a);
+  } else {
+    aPerson = people.get(a)!
+  }
+
+  if (!people.has(b)) {
+    anotherPerson = new OneSecretAtAtime(b);
+  } else {
+    anotherPerson = people.get(b)!
+  }
+
+  aPerson.talksTo(anotherPerson)
+
+  people.set(a, aPerson)
+  people.set(b, anotherPerson)
 }
 
+export function secret(p: string, s: string) {
+  const aPerson = people.get(p);
 
-const useCase2 = () => {
-  seaPort.receiveShip()
-  seaPort.unload()
-  seaPort.show()
+  aPerson!.secret(s)
 }
 
+export function propagate() {
 
-const useCase3 = () => {
-  seaPort.receiveShip()
-  seaPort.unload()
-  seaPort.receiveShip()
-  seaPort.unload()
-  seaPort.show()
+  people.forEach((aPerson: Person) => {
+    aPerson.gossip()
+  })
+
+  console.log("people", people);
 }
-
-
-const useCase4 = () => {
-  seaPort.receiveShip()
-  seaPort.unload()
-  seaPort.receiveShip()
-  seaPort.unload()
-  seaPort.receiveShip()
-  seaPort.unload()
-  seaPort.show()
-}
-
-const useCases = [useCase0, useCase1, useCase2, useCase3, useCase4]
-
-useCases.forEach(useCase => {
-  console.log('Start...')
-  useCase();
-  console.log('End...')
-})
-
-
